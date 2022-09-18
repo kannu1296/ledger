@@ -5,14 +5,14 @@ import co.ledger.dto.requestdto.BankInfoDto;
 import co.ledger.dto.requestdto.LoanRequestDto;
 import co.ledger.dto.requestdto.PaymentRequestDto;
 import co.ledger.dto.responsedto.BalanceResponseDto;
-import co.ledger.service.Ledger;
-import co.ledger.service.impl.LedgerImpl;
+import co.ledger.service.LedgerService;
+import co.ledger.service.impl.LedgerServiceImpl;
 
 /**
  * An invoker to invoke ledger commands
  */
 class LedgerCommandInvoker {
-    private static Ledger ledger = new LedgerImpl();
+    private static LedgerService ledger = new LedgerServiceImpl();
 
     public static void invokeLedgerMethods(String[] commandData){
         String command = commandData[0];
