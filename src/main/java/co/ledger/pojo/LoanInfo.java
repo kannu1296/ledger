@@ -11,6 +11,18 @@ public class LoanInfo {
         this.noOfEmis = noOfEmis;
     }
 
+    public int getTotalAmount() {
+        return totalAmount;
+    }
+
+    public int getNoOfEmis() {
+        return noOfEmis;
+    }
+
+    public int getEmiAmount() {
+        return emiAmount;
+    }
+
     @Override
     public String toString() {
         return totalAmount+","+noOfEmis+","+emiAmount;

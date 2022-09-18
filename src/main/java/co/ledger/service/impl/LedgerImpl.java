@@ -1,6 +1,7 @@
 package co.ledger.service.impl;
 
 import co.ledger.pojo.LoanInfo;
+import co.ledger.pojo.LumpSumInfo;
 import co.ledger.service.Ledger;
 
 import java.util.HashMap;
@@ -12,9 +13,11 @@ import java.util.Map;
 public class LedgerImpl  implements Ledger {
 
     private Map<String, LoanInfo> loanInfoMap;
+    private Map<String, LumpSumInfo> lumpSumInfoMap;
 
     public LedgerImpl(){
         loanInfoMap = new HashMap<>();
+        lumpSumInfoMap = new HashMap<>();
     }
 
     /**
@@ -36,6 +39,23 @@ public class LedgerImpl  implements Ledger {
 
         System.out.println("Total Amount: " + totalAmount + " No Of Emis: "+ noOfEmis +
                 " Emi Amount: "+ emiAmount + " Loan Info -> " + loanInfoMap);
+    }
+
+    /**
+     * This Method is used to store lump sum payment information
+     * @param bankName
+     * @param borrowerName
+     * @param lumpSumAmount
+     * @param emiNumber
+     */
+    @Override
+    public void payment(String bankName, String borrowerName, int lumpSumAmount, int emiNumber){
+        String lumpSumMapKey = bankName + borrowerName;
+
+        lumpSumInfoMap.put(lumpSumMapKey, new LumpSumInfo(emiNumber, lumpSumAmount));
+
+        System.out.println("Emi Number: " + emiNumber + " Lump Sum Amount: "+ lumpSumAmount +
+                " Lump Sum Amount Map -> " + lumpSumInfoMap);
     }
 
 

@@ -20,4 +20,20 @@ class LedgerImplSpec extends Specification{
         then: "Loan Info Should be created successfully"
         0*ledger.loan(_,_,_,_,_)
     }
+
+    def "test ledger impl payment mathod"(){
+
+        given: "Bank name, Borrower name, Lump Sum Amount, Emi Number, & Ledger object"
+        Ledger ledger = new LedgerImpl()
+        def bankName = "IDIDI"
+        def borrowerName = "Dale"
+        def lumpSumAmount = 1000
+        def emiNumber = 5
+
+        when: "payment Method is called"
+        ledger.payment(bankName, borrowerName, lumpSumAmount, emiNumber)
+
+        then: "Lump Sum Info Should be created successfully"
+        0*ledger.loan(_,_,_,_,_)
+    }
 }
