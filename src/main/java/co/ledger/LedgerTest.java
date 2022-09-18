@@ -1,8 +1,9 @@
 package co.ledger;
 
+public class LedgerTest {
 
-public class Application {
     public static void main(String[] args) {
+
 
     }
 }

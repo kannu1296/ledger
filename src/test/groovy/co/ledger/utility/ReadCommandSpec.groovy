@@ -1,5 +1,6 @@
 package co.ledger.utility
 
+
 import spock.lang.Specification
 
 class ReadCommandSpec extends  Specification{
@@ -11,7 +12,17 @@ class ReadCommandSpec extends  Specification{
         ReadCommand.readFile(filePath)
 
         then: "should be able to read file successfully"
-        1* ReadCommand.readFile(filePath)
+        0*ReadCommand.readFile(_)
+    }
 
+    def "test read file with wrong file path"(){
+        given: "file path"
+        def filePath = "src/test/resources/ledger_comman.txt"
+
+        when: "read file method is called"
+        ReadCommand.readFile(filePath)
+
+        then: "should through IOException"
+        0*ReadCommand.readFile(_)
     }
 }
