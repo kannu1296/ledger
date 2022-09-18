@@ -8,7 +8,7 @@ import co.ledger.dto.responsedto.BalanceResponseDto;
 /**
  * Interface to do Ledger activities
  */
-public interface Ledger {
+public interface LedgerService {
     void loan(LoanRequestDto loanRequestDto);
     void payment(PaymentRequestDto paymentRequestDto);
     BalanceResponseDto balance(BalanceRequestDto balanceRequestDto);

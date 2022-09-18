@@ -6,7 +6,7 @@ import co.ledger.dto.requestdto.PaymentRequestDto;
 import co.ledger.dto.responsedto.BalanceResponseDto;
 import co.ledger.pojo.LoanInfo;
 import co.ledger.pojo.LumpSumInfo;
-import co.ledger.service.Ledger;
+import co.ledger.service.LedgerService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,12 +14,12 @@ import java.util.Map;
 /**
  * class to implement ledger activities
  */
-public class LedgerImpl implements Ledger {
+public class LedgerServiceImpl implements LedgerService {
 
     private Map<String, LoanInfo> loanInfoMap;
     private Map<String, LumpSumInfo> lumpSumInfoMap;
 
-    public LedgerImpl(){
+    public LedgerServiceImpl(){
         loanInfoMap = new HashMap<>();
         lumpSumInfoMap = new HashMap<>();
     }

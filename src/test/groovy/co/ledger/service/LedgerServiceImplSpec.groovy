@@ -5,16 +5,16 @@ import co.ledger.dto.requestdto.BankInfoDto
 import co.ledger.dto.requestdto.LoanRequestDto
 import co.ledger.dto.requestdto.PaymentRequestDto
 import co.ledger.dto.responsedto.BalanceResponseDto
-import co.ledger.service.impl.LedgerImpl
+import co.ledger.service.impl.LedgerServiceImpl
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class LedgerImplSpec extends Specification{
+class LedgerServiceImplSpec extends Specification{
     def "test ledger impl loan mathod"(){
 
         given: "Ledger Object"
-        Ledger ledger = new LedgerImpl()
+        LedgerService ledger = new LedgerServiceImpl()
 
         when: "Loan Method is called"
         ledger.loan(buildLoanRequestDto("IDIDI", "Dale", 10000, 5, 4))
@@ -26,7 +26,7 @@ class LedgerImplSpec extends Specification{
     def "test ledger impl payment mathod"(){
 
         given: "Ledger Object"
-        Ledger ledger = new LedgerImpl()
+        LedgerService ledger = new LedgerServiceImpl()
 
         when: "payment Method is called"
         ledger.payment(buildPaymentRequestDto("IDIDI", "Dale", 1000, 5))
@@ -78,7 +78,7 @@ class LedgerImplSpec extends Specification{
     @Unroll
     def "test ledger impl balance method"() {
         given: "Ledger object, loanInfo, & lumpSumMap"
-        Ledger ledger = new LedgerImpl()
+        LedgerService ledger = new LedgerServiceImpl()
 
         ledger.loan(buildLoanRequestDto("IDIDI", "Dale", 5000, 1, 6))
         ledger.loan(buildLoanRequestDto("MBI", "Harry", 10000, 3, 7))
