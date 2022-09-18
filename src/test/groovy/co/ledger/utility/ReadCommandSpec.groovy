@@ -15,7 +15,7 @@ class ReadCommandSpec extends  Specification{
         0*ReadCommand.readFile(_)
     }
 
-    def "test read file with wrong file path"(){
+    def "test read file with wrong file path"() {
         given: "file path"
         def filePath = "src/test/resources/ledger_comman.txt"
 

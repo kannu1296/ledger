@@ -1,9 +1,15 @@
 package co.ledger.service;
 
+import co.ledger.dto.requestdto.BalanceRequestDto;
+import co.ledger.dto.requestdto.LoanRequestDto;
+import co.ledger.dto.requestdto.PaymentRequestDto;
+import co.ledger.dto.responsedto.BalanceResponseDto;
+
 /**
  * Interface to do Ledger activities
  */
 public interface Ledger {
-    void loan(String bankName, String borrowerName, int principal, int years, int ratOfInterest);
-    void payment(String bankName, String borrowerName, int lumpSumAmount, int emiNumber);
+    void loan(LoanRequestDto loanRequestDto);
+    void payment(PaymentRequestDto paymentRequestDto);
+    BalanceResponseDto balance(BalanceRequestDto balanceRequestDto);
 }

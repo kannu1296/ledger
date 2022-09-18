@@ -1,5 +1,9 @@
 package co.ledger.service.impl;
 
+import co.ledger.dto.requestdto.BalanceRequestDto;
+import co.ledger.dto.requestdto.LoanRequestDto;
+import co.ledger.dto.requestdto.PaymentRequestDto;
+import co.ledger.dto.responsedto.BalanceResponseDto;
 import co.ledger.pojo.LoanInfo;
 import co.ledger.pojo.LumpSumInfo;
 import co.ledger.service.Ledger;
@@ -10,7 +14,7 @@ import java.util.Map;
 /**
  * class to implement ledger activities
  */
-public class LedgerImpl  implements Ledger {
+public class LedgerImpl implements Ledger {
 
     private Map<String, LoanInfo> loanInfoMap;
     private Map<String, LumpSumInfo> lumpSumInfoMap;
@@ -22,40 +26,72 @@ public class LedgerImpl  implements Ledger {
 
     /**
      * This method is used to store loan information
-     * @param bankName
-     * @param borrowerName
-     * @param principal
-     * @param noOfYears
-     * @param ratOfInterest
      */
     @Override
-    public void loan(String bankName, String borrowerName, int principal, int noOfYears, int ratOfInterest) {
-        String loanInfoMapKey = bankName + borrowerName;
-        int totalAmount = this.calculateTotalAmount(principal, noOfYears, ratOfInterest);
-        int noOfEmis = this.calculateNoOfEmis(noOfYears);
+    public void loan(LoanRequestDto loanRequestDto) {
+        String loanInfoMapKey = loanRequestDto.getBankInfoDto().getBankName() + loanRequestDto.getBankInfoDto().getBorrowerName();
+        int totalAmount = this.calculateTotalAmount(loanRequestDto.getPrincipal(),
+                loanRequestDto.getNoOfYears(), loanRequestDto.getRateOfInterest());
+
+        int noOfEmis = this.calculateNoOfEmis(loanRequestDto.getNoOfYears());
         int emiAmount = this.calculateEmiAmount(totalAmount, noOfEmis);
 
         loanInfoMap.put(loanInfoMapKey, new LoanInfo(totalAmount, noOfEmis, emiAmount));
 
-        System.out.println("Total Amount: " + totalAmount + " No Of Emis: "+ noOfEmis +
-                " Emi Amount: "+ emiAmount + " Loan Info -> " + loanInfoMap);
+//        System.out.println("Total Amount: " + totalAmount + " No Of Emis: "+ noOfEmis +
+//                " Emi Amount: "+ emiAmount + " Loan Info -> " + loanInfoMap);
     }
 
     /**
      * This Method is used to store lump sum payment information
-     * @param bankName
-     * @param borrowerName
-     * @param lumpSumAmount
-     * @param emiNumber
      */
     @Override
-    public void payment(String bankName, String borrowerName, int lumpSumAmount, int emiNumber){
-        String lumpSumMapKey = bankName + borrowerName;
+    public void payment(PaymentRequestDto paymentRequestDto){
+        String lumpSumMapKey = paymentRequestDto.getBankInfoDto().getBankName() + paymentRequestDto.getBankInfoDto().getBorrowerName();
 
-        lumpSumInfoMap.put(lumpSumMapKey, new LumpSumInfo(emiNumber, lumpSumAmount));
+        lumpSumInfoMap.put(lumpSumMapKey, new LumpSumInfo(paymentRequestDto.getLumpSumAmount(), paymentRequestDto.getEmiNumber()));
 
-        System.out.println("Emi Number: " + emiNumber + " Lump Sum Amount: "+ lumpSumAmount +
-                " Lump Sum Amount Map -> " + lumpSumInfoMap);
+//        System.out.println("Emi Number: " + emiNumber + " Lump Sum Amount: "+ lumpSumAmount +
+//                " Lump Sum Amount Map -> " + lumpSumInfoMap);
+    }
+
+    /**
+     * This Method calculate balance info of user
+     */
+    @Override
+    public BalanceResponseDto balance(BalanceRequestDto balanceRequestDto){
+        int remainingNoOfEmis;
+        int totalAmountPaid;
+
+        String key = balanceRequestDto.getBankInfoDto().getBankName() + balanceRequestDto.getBankInfoDto().getBorrowerName();
+        int emiNumber = balanceRequestDto.getEmiNumber();
+
+        if(!loanInfoMap.containsKey(key)){
+            System.out.println("Not a valid Emi Account");
+            return null;
+        }
+
+        LoanInfo loanInfo = loanInfoMap.get(key);
+
+        if(lumpSumInfoMap.containsKey(key) && lumpSumInfoMap.get(key).getEmiNumber() <= emiNumber){
+            int lumpSumAmount = lumpSumInfoMap.get(key).getLumpSumAmount();
+            int emiAmount = loanInfo.getEmiAmount();
+
+            totalAmountPaid = emiAmount * emiNumber + lumpSumAmount;
+
+            int totalAmount = loanInfo.getTotalAmount();
+
+            remainingNoOfEmis = (int)Math.ceil((double)(totalAmount - totalAmountPaid) / emiAmount);
+        } else {
+            int emiAmount = loanInfo.getEmiAmount();
+
+            totalAmountPaid = emiAmount * emiNumber;
+            remainingNoOfEmis = loanInfo.getNoOfEmis() - emiNumber;
+        }
+
+        return BalanceResponseDto.builder().totalAmountPaid(totalAmountPaid).
+                remainingNoOfEmis(remainingNoOfEmis).
+                build();
     }
 
 
@@ -69,11 +105,11 @@ public class LedgerImpl  implements Ledger {
         return (principal * noOfYears * rateOfInterest)/100;
     }
 
-    private int calculateNoOfEmis(int noOfYears){
-        return noOfYears*12;
+    private int calculateEmiAmount(int totalAmount, int noOfEmis){
+        return (int)Math.ceil((double) totalAmount / noOfEmis);
     }
 
-    private int calculateEmiAmount(int totalAmount, int noOfYears){
-        return (int)Math.ceil((double) totalAmount / noOfYears);
+    private int calculateNoOfEmis(int noOfYears){
+        return noOfYears*12;
     }
 }

@@ -1,13 +1,14 @@
-package co.ledger.pojo;
+package co.ledger.dto.requestdto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 @AllArgsConstructor
-@ToString
+@Builder
 @Getter
-public class LumpSumInfo {
+public class PaymentRequestDto {
+    private BankInfoDto bankInfoDto;
     private int lumpSumAmount;
     private int emiNumber;
 }

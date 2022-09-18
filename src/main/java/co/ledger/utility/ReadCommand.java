@@ -16,7 +16,7 @@ public class ReadCommand {
 
             while (line != null) {
                 String[] commandData = line.split(" ");
-
+                LedgerCommandInvoker.invokeLedgerMethods(commandData);
                 line = br.readLine();
             }
 
