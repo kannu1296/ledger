@@ -38,16 +38,6 @@ public class LedgerImpl  implements Ledger {
                 " Emi Amount: "+ emiAmount + " Loan Info -> " + loanInfoMap);
     }
 
-    @Override
-    public void payment(String bankName, String borrowerName, int lumpSumAmount, int emiNumber) {
-
-    }
-
-    @Override
-    public int balance(String bankName, String borrowerName, int emiNumber) {
-        return 0;
-
-    }
 
     private int calculateTotalAmount(int principal, int noOfYears, int ratOfInterest){
         int interestAmount = this.calculateInterestAmount(principal, noOfYears, ratOfInterest);

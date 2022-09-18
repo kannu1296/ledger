@@ -5,6 +5,4 @@ package co.ledger.service;
  */
 public interface Ledger {
     void loan(String bankName, String borrowerName, int principal, int years, int ratOfInterest);
-    void payment(String bankName, String borrowerName, int lumpSumAmount, int emiNumber);
-    int balance(String bankName, String borrowerName, int emiNumber);
 }
